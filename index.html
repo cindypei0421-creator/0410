@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>學習歷程檔案</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    /* 導覽列 */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #333;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #444;
+      min-width: 160px;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    section {
+      padding: 100px 20px;
+      min-height: 100vh;
+    }
+
+    /* 首頁 */
+    #home {
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: white;
+      text-align: center;
+    }
+
+    #home h1 {
+      font-size: 3em;
+    }
+
+    /* 卡片 */
+    .card {
+      background: white;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 15px;
+      width: 80%;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transform: translateY(50px);
+      opacity: 0;
+      transition: all 0.6s ease;
+    }
+
+    .card.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .years button {
+      margin: 5px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .content {
+      margin-top: 10px;
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- 導覽列 -->
+  <nav>
+    <div>
+      <a onclick="scrollToSection('home')">首頁</a>
+      <div class="dropdown">
+        <a>科目 ▼</a>
+        <div class="dropdown-content">
+          <a onclick="scrollToSection('chinese')">國文</a>
+          <a onclick="scrollToSection('english')">英文</a>
+          <a onclick="scrollToSection('math')">數學</a>
+          <a onclick="scrollToSection('physics')">物理</a>
+          <a onclick="scrollToSection('chemistry')">化學</a>
+          <a onclick="scrollToSection('biology')">生物</a>
+          <a onclick="scrollToSection('geography')">地理</a>
+          <a onclick="scrollToSection('history')">歷史</a>
+          <a onclick="scrollToSection('civics')">公民</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 首頁 -->
+  <section id="home">
+    <h1>我的學習歷程檔案</h1>
+    <p>這裡放你的個人介紹（例如：興趣、目標、專長）</p>
+  </section>
+
+  <!-- 科目模板 -->
+  <script>
+    const subjects = [
+      {id:'chinese', name:'國文'},
+      {id:'english', name:'英文'},
+      {id:'math', name:'數學'},
+      {id:'physics', name:'物理'},
+      {id:'chemistry', name:'化學'},
+      {id:'biology', name:'生物'},
+      {id:'geography', name:'地理'},
+      {id:'history', name:'歷史'},
+      {id:'civics', name:'公民'}
+    ];
+
+    subjects.forEach(sub => {
+      const section = document.createElement('section');
+      section.id = sub.id;
+      section.innerHTML = `
+        <h2>${sub.name}</h2>
+        <div class="card">
+          <div class="years">
+            <button onclick="toggleContent(this, 'y1')">高一</button>
+            <button onclick="toggleContent(this, 'y2')">高二</button>
+            <button onclick="toggleContent(this, 'y3')">高三</button>
+          </div>
+          <div class="content y1">放高一成果</div>
+          <div class="content y2">放高二成果</div>
+          <div class="content y3">放高三成果</div>
+        </div>
+      `;
+      document.body.appendChild(section);
+    });
+
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView();
+    }
+
+    function toggleContent(btn, year) {
+      const parent = btn.closest('.card');
+      parent.querySelectorAll('.content').forEach(c => c.style.display='none');
+      parent.querySelector('.'+year).style.display = 'block';
+    }
+
+    /* 滾動動畫 */
+    window.addEventListener('scroll', () => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 50) {
+          card.classList.add('show');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
